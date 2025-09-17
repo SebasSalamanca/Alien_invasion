@@ -1,9 +1,11 @@
 import sys
 import pygame
+from random import randint
 from settings import Settings
 from ship import Ship
 from bullet import Bullet
 from alien import Alien
+from raindrop import Monster
 
 
 class AlienInvasion:
@@ -20,8 +22,10 @@ class AlienInvasion:
         self.ship = Ship(self)
         self.bullets = pygame.sprite.Group()
         self.aliens = pygame.sprite.Group()
+        self.monsters = pygame.sprite.Group()
 
         self._create_fleet()
+        self._create_fleet_monsters()
 
     def _create_fleet(self):
         """Create the fleet of aliens"""
@@ -47,7 +51,16 @@ class AlienInvasion:
         new_alien.rect.x = x_position
         new_alien.rect.y = y_position
         self.aliens.add(new_alien)
+
+    def _create_fleet_monsters(self):
+        for new_monster in range(randint(7, 10)):
+            new_monster = Monster(self)
+            new_monster.set_random_position()
+            self.monsters.add(new_monster)
+        Monster.vector_location = []
         
+    
+
     def _check_fleet_edges(self):
         """Respond appropriately if any aliens have reached an edge"""
         for alien in self.aliens.sprites():
@@ -68,13 +81,18 @@ class AlienInvasion:
         """Check if the fleet is at an edge, the update the position"""
         self._check_fleet_edges()
 
+    def _update_monsters(self):
+        """Drip the monsters on the screen"""
+        self.monsters.update()
+
     def run_game(self):
         """Start the main loop for the game"""
         while True:
             self._check_events()            
             self.ship.update()
             self._update_bullets() 
-            self._update_aliens()         
+            self._update_aliens()    
+            self._update_monsters()     
             self._update_screen()
             self.clock.tick(60)
     
@@ -143,6 +161,9 @@ class AlienInvasion:
             bullet.draw_bullet()
         self.ship.blitme()
         self.aliens.draw(self.screen)
+        self.monsters.draw(self.screen)
+
+
         #Make the most recently drawn secreen visible
         pygame.display.flip()
 

@@ -22,8 +22,10 @@ class Settings:
 
         #Alien settings
         self.alien_speed = 2.5
-        self.fleet_drop_speed = 10
+        self.fleet_drop_speed = 7
         #Fleet direction of 1 represents right; -1 represents left
         self.fleet_direction = 1
 
-        
+        #Number of monsters 
+        self.monster_speed = 8
+        self.number_monsters = 7
