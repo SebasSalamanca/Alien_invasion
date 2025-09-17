@@ -25,7 +25,7 @@ class AlienInvasion:
         self.monsters = pygame.sprite.Group()
 
         self._create_fleet()
-        self._create_fleet_monsters()
+        
 
     def _create_fleet(self):
         """Create the fleet of aliens"""
@@ -81,9 +81,19 @@ class AlienInvasion:
         """Check if the fleet is at an edge, the update the position"""
         self._check_fleet_edges()
 
+    def _create_new_fleet_monsters(self):
+        if len(self.monsters) == 0:
+            self._create_fleet_monsters()
+    
     def _update_monsters(self):
         """Drip the monsters on the screen"""
         self.monsters.update()
+        for monster in self.monsters.copy():
+            if monster.rect.top >= self.settings.screen_height:
+                self.monsters.remove(monster)
+
+    
+
 
     def run_game(self):
         """Start the main loop for the game"""
@@ -91,8 +101,9 @@ class AlienInvasion:
             self._check_events()            
             self.ship.update()
             self._update_bullets() 
-            self._update_aliens()    
-            self._update_monsters()     
+            self._update_aliens()  
+            self._create_new_fleet_monsters()
+            self._update_monsters() 
             self._update_screen()
             self.clock.tick(60)
     
