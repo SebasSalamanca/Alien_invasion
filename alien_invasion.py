@@ -53,11 +53,12 @@ class AlienInvasion:
         self.aliens.add(new_alien)
 
     def _create_fleet_monsters(self):
-        for new_monster in range(randint(7, 10)):
+        number_of_monsters = randint(8, 12)
+        for monster_index in range(number_of_monsters):
             new_monster = Monster(self)
-            new_monster.set_random_position()
+            new_monster.set_random_position(monster_index)
             self.monsters.add(new_monster)
-        Monster.vector_location = []
+        
         
     
 
@@ -77,9 +78,13 @@ class AlienInvasion:
 
     def _update_aliens(self):
         #Update the position of all aliens in the fleet
+        self._check_fleet_edges()
         self.aliens.update() #We use the update() method on the alien group, which calls each alien's update() method.
         """Check if the fleet is at an edge, the update the position"""
-        self._check_fleet_edges()
+        #Look for alien-ship collisions.
+        if pygame.sprite.spritecollideany(self.ship, self.aliens):
+            print("Ship Hit by alien!")
+
 
     def _create_new_fleet_monsters(self):
         if len(self.monsters) == 0:
@@ -88,6 +93,8 @@ class AlienInvasion:
     def _update_monsters(self):
         """Drip the monsters on the screen"""
         self.monsters.update()
+        if pygame.sprite.spritecollideany(self.ship, self.monsters):
+            print('Ship Hit by monster')
         for monster in self.monsters.copy():
             if monster.rect.top >= self.settings.screen_height:
                 self.monsters.remove(monster)
@@ -116,6 +123,19 @@ class AlienInvasion:
         for bullet in self.bullets.copy():
             if bullet.rect.bottom <= 0:
                 self.bullets.remove(bullet)
+        #Check for any bullets that have hit aliens
+        #If so, get rid of the bullet and the alien 
+        self._check_bullet_alien_collisions()
+
+    def _check_bullet_alien_collisions(self):
+        collisions = pygame.sprite.groupcollide(self.bullets, self.aliens,True, True)
+        if not self.aliens:
+            #Destry existing bullets and create new fleet
+            self.bullets.empty()
+            self._create_fleet()
+        
+        
+        
 
 
 

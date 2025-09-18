@@ -1,11 +1,11 @@
 import pygame
-from random import randint
+import random
 from pygame.sprite import Sprite
 
 
 class Monster(Sprite):
     """A class to represent a moster it will drop from top of the screen."""
-    vector_location = []
+    
     
     def __init__(self, ai_game):
         """Initialize a monster an it starting position"""
@@ -26,29 +26,23 @@ class Monster(Sprite):
         #Store the alien's horizontal position 
         self.y = float(self.rect.y)
         
+        #List of position of the vector:
+        self.inventory_position = list(range(0,self.settings.screen_width, 50))
 
 
-    def set_random_position(self):
+    def set_random_position(self, monster_index):
+
+        #if monster_index == Monster.monster_id:
         
-        if len(Monster.vector_location) < 1:
-            number_2 = randint(self.rect.width, (self.settings.screen_width-self.rect.width))
-            Monster.vector_location.append(number_2)
-            self.rect.x = number_2
-        else:
-            tam = len(Monster.vector_location)
-            while (len(Monster.vector_location) == tam):
-                number_3 = randint(self.rect.width, (self.settings.screen_width-self.rect.width))
-                vector_3 = []
-                for i in range((len(Monster.vector_location))):
-                    if(number_3 < Monster.vector_location[i] - 80 or number_3 > Monster.vector_location[i] + 80):
-                        vector_3.append(1)
-                    else:
-                        vector_3.append(0)
-                if 0 not in vector_3:
-                    self.rect.x = number_3
-                    Monster.vector_location.append(number_3)
+        start_position = monster_index * 2
+        end_position = start_position + 2
 
-
+        number_2 = random.sample(self.inventory_position[start_position:end_position], 1)
+        self.rect.x = number_2[0]
+  
+            
+        
+        
     def update(self):
         self.y += self.settings.monster_speed
         self.rect.y = self.y

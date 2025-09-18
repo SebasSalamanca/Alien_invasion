@@ -1,4 +1,4 @@
-
+import pygame
 
 class Settings:
     """A class to store all settings for alien invasion"""
@@ -8,10 +8,10 @@ class Settings:
         #Screen settings
         self.screen_width = 1200
         self.screen_height = 800
-        self.bg_color = (125,125,125)
+        self.bg_color = (0, 10, 30)
 
         #Ship settings
-        self.ship_speed = 5
+        self.ship_speed = 8
 
         #Bullet Settings
         self.bullet_speed = 7.0
@@ -27,5 +27,5 @@ class Settings:
         self.fleet_direction = 1
 
         #Number of monsters 
-        self.monster_speed = 8
+        self.monster_speed = 6
         self.number_monsters = 7
