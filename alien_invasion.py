@@ -31,6 +31,9 @@ class AlienInvasion:
         self.monsters = pygame.sprite.Group()
 
         self._create_fleet()
+
+        #Start Alien Invasion in active state
+        self.game_active = True
         
 
     def _create_fleet(self):
@@ -59,13 +62,12 @@ class AlienInvasion:
         self.aliens.add(new_alien)
 
     def _create_fleet_monsters(self):
-        number_of_monsters = randint(4, 6)
-        for monster_index in range(number_of_monsters):
-            new_monster = Monster(self)
-            new_monster.set_random_position(monster_index)
-            self.monsters.add(new_monster)
-        
-        
+        if len(self.monsters) == 0:
+            number_of_monsters = randint(4, 6)
+            for monster_index in range(number_of_monsters):
+                new_monster = Monster(self)
+                new_monster.set_random_position(monster_index)
+                self.monsters.add(new_monster)
     
 
     def _check_fleet_edges(self):
@@ -94,6 +96,7 @@ class AlienInvasion:
         #Lookf for aliens hitting the bottom of the screen 
         self._check_aliens_bottom()
 
+
     def _check_aliens_bottom(self):
         #Check if any aliens have reached the bottom of the screen.
         for alien in self.aliens.sprites():
@@ -103,11 +106,6 @@ class AlienInvasion:
                 break
 
 
-
-    def _create_new_fleet_monsters(self):
-        if len(self.monsters) == 0:
-            self._create_fleet_monsters()
-    
     def _update_monsters(self):
         """Drip the monsters on the screen"""
         self.monsters.update()
@@ -126,10 +124,11 @@ class AlienInvasion:
         while True:
             self._check_events()            
             self.ship.update()
-            self._update_bullets() 
-            self._update_aliens()  
-            self._create_new_fleet_monsters()
-            self._update_monsters() 
+            if self.game_active:
+                self._update_bullets() 
+                self._update_aliens()  
+                self._create_fleet_monsters()
+                self._update_monsters() 
             self._update_screen()
             self.clock.tick(60)
     
@@ -156,23 +155,26 @@ class AlienInvasion:
         
     def _ship_hit(self):
         #Respond to the ship being hit by the alien.
-        #Decrement ships_left 
-        self.stats.ships_left -= 1
+        if self.stats.ships_left > 0:
+            #Decrement ships_left 
+            self.stats.ships_left -= 1
 
-        #Get rid of any remaining bullets and aliens. 
-        self.bullets.empty()
-        self.aliens.empty()
-        self.monsters.empty()
+            #Get rid of any remaining bullets and aliens. 
+            self.bullets.empty()
+            self.aliens.empty()
+            self.monsters.empty()
 
-        
-        
-        #create a new fleet and center the ship.
-        self._create_fleet()
-        self._create_fleet_monsters()
-        self.ship.center_ship()
 
-        #Pause 
-        sleep(1)
+
+            #create a new fleet and center the ship.
+            self._create_fleet()
+            self._create_fleet_monsters()
+            self.ship.center_ship()
+
+            #Pause 
+            sleep(1)
+        else:
+            self.game_active = False
 
 
 
