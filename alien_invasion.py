@@ -8,6 +8,7 @@ from ship import Ship
 from bullet import Bullet
 from alien import Alien
 from raindrop import Monster
+from button import Button
 
 
 class AlienInvasion:
@@ -32,8 +33,10 @@ class AlienInvasion:
 
         self._create_fleet()
 
-        #Start Alien Invasion in active state
-        self.game_active = True
+        #Start Alien Invasion in an inactive state
+        self.game_active = False
+        #Because we need only one Play button we'll create the button in the __init__() method
+        self.play_button = Button(self, "Play")
         
 
     def _create_fleet(self):
@@ -123,8 +126,8 @@ class AlienInvasion:
         """Start the main loop for the game"""
         while True:
             self._check_events()            
-            self.ship.update()
             if self.game_active:
+                self.ship.update()
                 self._update_bullets() 
                 self._update_aliens()  
                 self._create_fleet_monsters()
@@ -229,7 +232,9 @@ class AlienInvasion:
         self.ship.blitme()
         self.aliens.draw(self.screen)
         self.monsters.draw(self.screen)
-
+        #Draw the play button if the game is inactive
+        if not self.game_active:
+            self.play_button.draw_button()
 
         #Make the most recently drawn secreen visible
         pygame.display.flip()
