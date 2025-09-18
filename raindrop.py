@@ -15,7 +15,7 @@ class Monster(Sprite):
         self.settings = ai_game.settings 
 
         #Load the alien and set its attribute
-        self.image = pygame.image.load('images/monster.bmp')
+        self.image = pygame.image.load('images/monster_42.bmp')
         self.rect = self.image.get_rect()
 
         #Same color of the background
@@ -34,8 +34,8 @@ class Monster(Sprite):
 
         #if monster_index == Monster.monster_id:
         
-        start_position = monster_index * 2
-        end_position = start_position + 2
+        start_position = monster_index * 4
+        end_position = start_position + 4
 
         number_2 = random.sample(self.inventory_position[start_position:end_position], 1)
         self.rect.x = number_2[0]

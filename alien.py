@@ -13,12 +13,12 @@ class Alien(Sprite):
         self.settings = ai_game.settings
 
         #Load the alien image and set its attribute
-        self.image = pygame.image.load('images/alien_paul.bmp')
+        self.image = pygame.image.load('images/alien_paul_42.bmp')
         self.rect = self.image.get_rect()
 
         #Same color of the background.
-        back_gr = self.image.get_at((0,0))
-        self.image.set_colorkey(back_gr)    
+        #back_gr = self.image.get_at((0,0))
+        #self.image.set_colorkey(back_gr)    
 
         #Start each new alien near the top left of the screen
         self.rect.x = self.rect.width

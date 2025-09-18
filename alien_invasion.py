@@ -1,7 +1,9 @@
 import sys
+from time import sleep
 import pygame
 from random import randint
 from settings import Settings
+from game_stats import GameStats
 from ship import Ship
 from bullet import Bullet
 from alien import Alien
@@ -19,6 +21,10 @@ class AlienInvasion:
         self.screen = pygame.display.set_mode((self.settings.screen_width, self.settings.screen_height))
         print(type(self.screen))
         pygame.display.set_caption("Alien_Invasion")
+
+        #Create an instance to store game statistics 
+        self.stats = GameStats(self)
+
         self.ship = Ship(self)
         self.bullets = pygame.sprite.Group()
         self.aliens = pygame.sprite.Group()
@@ -36,13 +42,13 @@ class AlienInvasion:
 
         current_x, current_y = alien_width, alien_height
 
-        while current_y < (self.settings.screen_height - 2*alien_height):        
+        while current_y < (self.settings.screen_height - 3*alien_height):        
             while current_x < (self.settings.screen_width - 2*alien_width):
                 self._create_alien(current_x, current_y)
                 current_x += 2 * alien_width    
             #Finished a row: reset x value and increment y value
             current_x = alien_width
-            current_y += 2*alien_height
+            current_y += 1.5*alien_height
 
     def _create_alien(self, x_position, y_position):
         """Create an alien and place it in the row."""
@@ -53,7 +59,7 @@ class AlienInvasion:
         self.aliens.add(new_alien)
 
     def _create_fleet_monsters(self):
-        number_of_monsters = randint(8, 12)
+        number_of_monsters = randint(4, 6)
         for monster_index in range(number_of_monsters):
             new_monster = Monster(self)
             new_monster.set_random_position(monster_index)
@@ -84,6 +90,18 @@ class AlienInvasion:
         #Look for alien-ship collisions.
         if pygame.sprite.spritecollideany(self.ship, self.aliens):
             print("Ship Hit by alien!")
+            self._ship_hit()
+        #Lookf for aliens hitting the bottom of the screen 
+        self._check_aliens_bottom()
+
+    def _check_aliens_bottom(self):
+        #Check if any aliens have reached the bottom of the screen.
+        for alien in self.aliens.sprites():
+            if alien.rect.bottom >= self.settings.screen_height:
+                #Teat this the same as if the ship got hit. 
+                self._ship_hit()
+                break
+
 
 
     def _create_new_fleet_monsters(self):
@@ -95,6 +113,7 @@ class AlienInvasion:
         self.monsters.update()
         if pygame.sprite.spritecollideany(self.ship, self.monsters):
             print('Ship Hit by monster')
+            self._ship_hit()
         for monster in self.monsters.copy():
             if monster.rect.top >= self.settings.screen_height:
                 self.monsters.remove(monster)
@@ -135,7 +154,26 @@ class AlienInvasion:
             self._create_fleet()
         
         
+    def _ship_hit(self):
+        #Respond to the ship being hit by the alien.
+        #Decrement ships_left 
+        self.stats.ships_left -= 1
+
+        #Get rid of any remaining bullets and aliens. 
+        self.bullets.empty()
+        self.aliens.empty()
+        self.monsters.empty()
+
         
+        
+        #create a new fleet and center the ship.
+        self._create_fleet()
+        self._create_fleet_monsters()
+        self.ship.center_ship()
+
+        #Pause 
+        sleep(1)
+
 
 
 
@@ -156,26 +194,22 @@ class AlienInvasion:
             self.ship.moving_right = True
         elif event.key == pygame.K_LEFT:
             self.ship.moving_left = True
-        elif event.key == pygame.K_UP:
-            self.ship.moving_up = True
-        elif event.key == pygame.K_DOWN:
-            self.ship.moving_down = True            
-
         elif event.key == pygame.K_q:
             sys.exit()
-
         elif event.key == pygame.K_SPACE:
             self._fire_bullet()
+
+        
+
+        
 
     def _check_keyup_events(self, event):
         if event.key == pygame.K_RIGHT:
             self.ship.moving_right = False
         elif event.key == pygame.K_LEFT:
             self.ship.moving_left = False
-        elif event.key == pygame.K_UP:
-            self.ship.moving_up = False
-        elif event.key == pygame.K_DOWN:
-            self.ship.moving_down = False
+    
+
 
     def _fire_bullet(self):
         """Create a new bullet and add it to the bullets group"""
