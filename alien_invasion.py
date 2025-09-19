@@ -148,7 +148,13 @@ class AlienInvasion:
         self._check_bullet_alien_collisions()
 
     def _check_bullet_alien_collisions(self):
+        """Respond to bullet-alien collision"""
+        #Disapear and then remove any bullet-alien collisions
         collisions = pygame.sprite.groupcollide(self.bullets, self.aliens,True, True)
+        if collisions:
+            for aliens in collisions.values():
+                self.stats.score += self.settings.alien_points * len(aliens) #Aliens is a list of objects.
+            self.sb.prep_score()
         if not self.aliens:
             #Destry existing bullets and create new fleet
             self.bullets.empty()
@@ -210,11 +216,12 @@ class AlienInvasion:
             """Without this line each game (without finish the program, only start a new game). would start with the
             incresing speed settings of the previous game."""
             self.settings.initialize_dynamic_settings()
-            self._game_starts_by_event()    
+            self._game_starts_by_event()   
+            self.sb.prep_score() 
             pygame.mouse.set_visible(False)
             
 
-    def _game_starts_by_event(self):
+    def _game_starts_by_event(self): #I did it put all inside this method
         """To reset the game each time the player clicks Play or p, we need to reset the game statistics,
             clear out the old aliens and bullets, build a new fleet, and center the ship.
         """

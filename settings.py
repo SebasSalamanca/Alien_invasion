@@ -31,7 +31,9 @@ class Settings:
         #How quickly the game speeds up 
         self.speedup_scale = 1.2
 
-        
+        #How quikly the alien point values increase
+        self.score_scale = 1.5
+
 
         self.initialize_dynamic_settings()
 
@@ -51,13 +53,16 @@ class Settings:
         #Level game
         self.game_level = 1
 
+        #Scoring settings
+        self.alien_points = 50
         
 
     def increase_speed(self):
         """Increase speed settings"""
         
         self.bullet_speed *= self.speedup_scale
-        
+        self.alien_points = int(self.alien_points * self.score_scale)
+
         if self.game_level == 1:
             self.number_monsters += 2**self.game_level
             self.monster_speed *= self.speedup_scale
