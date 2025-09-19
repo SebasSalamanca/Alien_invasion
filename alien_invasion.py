@@ -154,7 +154,8 @@ class AlienInvasion:
         if collisions:
             for aliens in collisions.values():
                 self.stats.score += self.settings.alien_points * len(aliens) #Aliens is a list of objects.
-            self.sb.prep_score()
+            self.sb.prep_score() #Until the first collitions update the score, if there where not other, it works like this
+            self.sb.check_high_score()
         if not self.aliens:
             #Destry existing bullets and create new fleet
             self.bullets.empty()
@@ -162,6 +163,10 @@ class AlienInvasion:
             #QUESTION TO USER IF SHOW NEW FLEET OF MONSTERS
             self.monsters.empty()
             self.settings.increase_speed()
+
+            #Increase level
+            self.stats.level += 1
+            self.sb.prep_level()
             
         
         
@@ -218,6 +223,7 @@ class AlienInvasion:
             self.settings.initialize_dynamic_settings()
             self._game_starts_by_event()   
             self.sb.prep_score() 
+            self.sb.prep_level()
             pygame.mouse.set_visible(False)
             
 
@@ -252,6 +258,7 @@ class AlienInvasion:
             self.settings.initialize_dynamic_settings()
             self._game_starts_by_event()
             self.sb.prep_score() 
+            self.sb.prep_level()
             pygame.mouse.set_visible(False)
 
         
