@@ -23,7 +23,8 @@ class Scoreboard:
     def prep_score(self):
         #Turn the score into a redered image
 
-        score_str = str(self.stats.score) 
+        rounded_score = round(self.stats.score, -1) #Sets the value of nearest number multiple of 10
+        score_str = f"{rounded_score:,}" #thousands separators
         self.score_image = self.font.render(score_str, True, self.text_color, self.settings.bg_color)
 
         #Display score at the top right of the screen

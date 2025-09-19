@@ -251,6 +251,7 @@ class AlienInvasion:
         elif event.key == pygame.K_p and self.game_active == False:
             self.settings.initialize_dynamic_settings()
             self._game_starts_by_event()
+            self.sb.prep_score() 
             pygame.mouse.set_visible(False)
 
         
