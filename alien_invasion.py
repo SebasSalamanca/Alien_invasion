@@ -56,7 +56,7 @@ class AlienInvasion:
                 current_x += 2 * alien_width    
             #Finished a row: reset x value and increment y value
             current_x = alien_width
-            current_y += 1.5 * alien_height
+            current_y += 2 * alien_height
 
     def _create_alien(self, x_position, y_position):
         """Create an alien and place it in the row."""
