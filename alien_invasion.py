@@ -48,15 +48,15 @@ class AlienInvasion:
         alien = Alien(self)
         alien_width, alien_height = alien.rect.size
 
-        current_x, current_y = alien_width, alien_height
+        current_x, current_y = alien_width, alien_height+20-20 #to down a little bit the alines 
 
-        while current_y < (self.settings.screen_height - 4*alien_height):        
+        while current_y < ((self.settings.screen_height) - 4*alien_height):        
             while current_x < (self.settings.screen_width - 2*alien_width):
                 self._create_alien(current_x, current_y)
                 current_x += 2 * alien_width    
             #Finished a row: reset x value and increment y value
             current_x = alien_width
-            current_y += 2 * alien_height
+            current_y += 1.5 * alien_height
 
     def _create_alien(self, x_position, y_position):
         """Create an alien and place it in the row."""
@@ -175,7 +175,7 @@ class AlienInvasion:
         if self.stats.ships_left > 0:
             #Decrement ships_left 
             self.stats.ships_left -= 1
-
+            self.sb.prep_ships()
             #Get rid of any remaining bullets and aliens. 
             self.bullets.empty()
             self.aliens.empty()
@@ -224,6 +224,7 @@ class AlienInvasion:
             self._game_starts_by_event()   
             self.sb.prep_score() 
             self.sb.prep_level()
+            self.sb.prep_ships()
             pygame.mouse.set_visible(False)
             
 
@@ -259,6 +260,7 @@ class AlienInvasion:
             self._game_starts_by_event()
             self.sb.prep_score() 
             self.sb.prep_level()
+            self.sb.prep_ships()
             pygame.mouse.set_visible(False)
 
         
