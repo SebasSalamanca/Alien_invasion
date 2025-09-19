@@ -25,17 +25,28 @@ class Monster(Sprite):
         
         #Store the alien's horizontal position 
         self.y = float(self.rect.y)
+
+        
         
         #List of position of the vector:
         self.inventory_position = list(range(0,self.settings.screen_width, 50))
 
+        
 
     def set_random_position(self, monster_index):
 
         #if monster_index == Monster.monster_id:
-        
-        start_position = monster_index * 4
-        end_position = start_position + 4
+        if self.settings.number_monsters == 6:
+            start_position = monster_index * 4
+            end_position = start_position + 4
+        elif self.settings.number_monsters == 8:
+            start_position = monster_index * 3
+            end_position = start_position + 3
+        elif self.settings.number_monsters > 8 and self.settings.number_monsters <= 12:
+            start_position = monster_index * 2
+            end_position = start_position + 2
+            
+            
 
         number_2 = random.sample(self.inventory_position[start_position:end_position], 1)
         self.rect.x = number_2[0]

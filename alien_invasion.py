@@ -9,6 +9,7 @@ from bullet import Bullet
 from alien import Alien
 from raindrop import Monster
 from button import Button
+from scoreboard import Scoreboard
 
 
 class AlienInvasion:
@@ -22,8 +23,10 @@ class AlienInvasion:
         self.screen = pygame.display.set_mode((self.settings.screen_width, self.settings.screen_height))
         pygame.display.set_caption("Alien_Invasion")
 
-        #Create an instance to store game statistics 
+        #Create an instance to store game statistics, 
+        #and create a score board
         self.stats = GameStats(self)
+        self.sb = Scoreboard(self)
 
         self.ship = Ship(self)
         self.bullets = pygame.sprite.Group()
@@ -47,13 +50,13 @@ class AlienInvasion:
 
         current_x, current_y = alien_width, alien_height
 
-        while current_y < (self.settings.screen_height - 3*alien_height):        
+        while current_y < (self.settings.screen_height - 4*alien_height):        
             while current_x < (self.settings.screen_width - 2*alien_width):
                 self._create_alien(current_x, current_y)
                 current_x += 2 * alien_width    
             #Finished a row: reset x value and increment y value
             current_x = alien_width
-            current_y += 1.5*alien_height
+            current_y += 2 * alien_height
 
     def _create_alien(self, x_position, y_position):
         """Create an alien and place it in the row."""
@@ -65,8 +68,7 @@ class AlienInvasion:
 
     def _create_fleet_monsters(self):
         if len(self.monsters) == 0:
-            number_of_monsters = randint(4, 6)
-            for monster_index in range(number_of_monsters):
+            for monster_index in range(self.settings.number_monsters):
                 new_monster = Monster(self)
                 new_monster.set_random_position(monster_index)
                 self.monsters.add(new_monster)
@@ -151,6 +153,10 @@ class AlienInvasion:
             #Destry existing bullets and create new fleet
             self.bullets.empty()
             self._create_fleet()
+            #QUESTION TO USER IF SHOW NEW FLEET OF MONSTERS
+            self.monsters.empty()
+            self.settings.increase_speed()
+            
         
         
     def _ship_hit(self):
@@ -201,6 +207,9 @@ class AlienInvasion:
         """Start a new game when the player clicks Play"""
         button_clicked = self.play_button.rect.collidepoint(mouse_pos)
         if button_clicked and not self.game_active:
+            """Without this line each game (without finish the program, only start a new game). would start with the
+            incresing speed settings of the previous game."""
+            self.settings.initialize_dynamic_settings()
             self._game_starts_by_event()    
             pygame.mouse.set_visible(False)
             
@@ -232,8 +241,10 @@ class AlienInvasion:
             sys.exit()
         elif event.key == pygame.K_SPACE:
             self._fire_bullet()
-        elif event.key == pygame.K_p:
+        elif event.key == pygame.K_p and self.game_active == False:
+            self.settings.initialize_dynamic_settings()
             self._game_starts_by_event()
+            pygame.mouse.set_visible(False)
 
         
 
@@ -263,6 +274,7 @@ class AlienInvasion:
         self.ship.blitme()
         self.aliens.draw(self.screen)
         self.monsters.draw(self.screen)
+        self.sb.show_score()
         #Draw the play button if the game is inactive
         if not self.game_active:
             self.play_button.draw_button()
