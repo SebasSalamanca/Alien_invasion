@@ -39,38 +39,61 @@ class Settings:
     def initialize_dynamic_settings(self):
 
         """Initialize settings that change throughout the game. """
-        self.ship_speed = 8
-        self.bullet_speed = 7.0
+        self.ship_speed = 4
+        self.bullet_speed = 6
         self.alien_speed = 2.5
-        self.monster_speed = 6
+        self.monster_speed = 4
         #Number of monsters 
         self.number_monsters = 6
 
         #Fleet direction of 1 represents right; -1 represents left
         self.fleet_direction = 1
 
-        #Level game
-        self.game_level = 1
-
         #Scoring settings
-        self.alien_points = 50
+        self.alien_points = 100
         
 
-    def increase_speed(self):
+    def increase_speed(self, level):
         """Increase speed settings"""
         
         self.bullet_speed *= self.speedup_scale
         self.alien_points = int(self.alien_points * self.score_scale)
+        print(level)
+        if level == 2:
 
-        if self.game_level == 1:
-            self.number_monsters += 2**self.game_level
+            self.alien_speed *= self.speedup_scale
+            self.ship_speed *= self.speedup_scale
+            self.monster_speed *= self.speedup_scale
+
+        elif level == 3:
+            self.number_monsters += 2
             self.monster_speed *= self.speedup_scale
             self.alien_speed *= self.speedup_scale
             self.ship_speed *= self.speedup_scale
-            self.game_level += 1
-        else:
-            self.monster_speed = 6.5
-            self.number_monsters = 12
+
+        elif level == 4:
+            self.monster_speed *= self.speedup_scale
+            self.alien_speed *= self.speedup_scale
+            self.ship_speed *= self.speedup_scale
+
+
+        elif level == 5:
+            
+            self.number_monsters += 4
+            self.monster_speed = 6.5 
+
+        elif level >= 6:
+
+            self.ship_speed = 11
+            self.monster_speed = 6.5 
+            self.bullet_speed = 10
+
+
+        
+        
+        
+        
+        
         
 
             

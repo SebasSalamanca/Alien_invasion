@@ -34,6 +34,7 @@ class AlienInvasion:
         self.monsters = pygame.sprite.Group()
 
         self._create_fleet()
+        
 
         #Start Alien Invasion in an inactive state
         self.game_active = False
@@ -67,11 +68,12 @@ class AlienInvasion:
         self.aliens.add(new_alien)
 
     def _create_fleet_monsters(self):
-        if len(self.monsters) == 0:
-            for monster_index in range(self.settings.number_monsters):
-                new_monster = Monster(self)
-                new_monster.set_random_position(monster_index)
-                self.monsters.add(new_monster)
+        
+        for monster_index in range(self.settings.number_monsters):
+            new_monster = Monster(self)
+            new_monster.set_random_position(monster_index)
+            self.monsters.add(new_monster)
+        
     
 
     def _check_fleet_edges(self):
@@ -111,6 +113,10 @@ class AlienInvasion:
 
     def _update_monsters(self):
         """Drip the monsters on the screen"""
+        
+        if len(self.monsters) == 0:
+            self._create_fleet_monsters()
+        
         self.monsters.update()
         if pygame.sprite.spritecollideany(self.ship, self.monsters):
             self._ship_hit()
@@ -129,7 +135,6 @@ class AlienInvasion:
                 self.ship.update()
                 self._update_bullets() 
                 self._update_aliens()  
-                self._create_fleet_monsters()
                 self._update_monsters() 
             self._update_screen()
             self.clock.tick(60)
@@ -162,11 +167,15 @@ class AlienInvasion:
             self._create_fleet()
             #QUESTION TO USER IF SHOW NEW FLEET OF MONSTERS
             self.monsters.empty()
-            self.settings.increase_speed()
+            
 
             #Increase level
             self.stats.level += 1
+            self.settings.increase_speed(self.stats.level)
             self.sb.prep_level()
+        
+        
+
             
         
         
