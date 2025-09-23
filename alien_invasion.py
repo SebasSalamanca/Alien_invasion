@@ -10,6 +10,7 @@ from alien import Alien
 from raindrop import Monster
 from button import Button
 from scoreboard import Scoreboard
+from sound_effects import SoundEffect
 
 
 class AlienInvasion:
@@ -22,6 +23,10 @@ class AlienInvasion:
         self.settings = Settings()
         self.screen = pygame.display.set_mode((self.settings.screen_width, self.settings.screen_height))
         pygame.display.set_caption("Alien_Invasion")
+
+        #Sound effects
+        self.sound_effect = SoundEffect()
+        self.sound_effect.play_back_sound()
 
         #Create an instance to store game statistics, 
         #and create a score board
@@ -157,6 +162,7 @@ class AlienInvasion:
         #Disapear and then remove any bullet-alien collisions
         collisions = pygame.sprite.groupcollide(self.bullets, self.aliens,True, True)
         if collisions:
+            self.sound_effect.play_kill_alien()
             for aliens in collisions.values():
                 self.stats.score += self.settings.alien_points * len(aliens) #Aliens is a list of objects.
             self.sb.prep_score() #Until the first collitions update the score, if there where not other, it works like this
@@ -181,6 +187,7 @@ class AlienInvasion:
         
     def _ship_hit(self):
         #Respond to the ship being hit by the alien.
+        self.sound_effect.play_explosion()
         if self.stats.ships_left > 0:
             #Decrement ships_left 
             self.stats.ships_left -= 1
@@ -221,6 +228,7 @@ class AlienInvasion:
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 mouse_pos = pygame.mouse.get_pos()
                 self._check_play_button(mouse_pos)
+                
 
 
     def _check_play_button(self, mouse_pos):
@@ -261,6 +269,7 @@ class AlienInvasion:
         elif event.key == pygame.K_LEFT:
             self.ship.moving_left = True
         elif event.key == pygame.K_q:
+            self.sound_effect.stop_back_sound()
             sys.exit()
         elif event.key == pygame.K_SPACE:
             self._fire_bullet()
@@ -286,6 +295,7 @@ class AlienInvasion:
 
     def _fire_bullet(self):
         """Create a new bullet and add it to the bullets group"""
+        self.sound_effect.play_shoot()
         if len(self.bullets) < self.settings.bullets_allowed: 
             new_bullet = Bullet(self)
             self.bullets.add(new_bullet)

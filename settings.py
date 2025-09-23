@@ -58,7 +58,7 @@ class Settings:
         
         self.bullet_speed *= self.speedup_scale
         self.alien_points = int(self.alien_points * self.score_scale)
-        print(level)
+        
         if level == 2:
 
             self.alien_speed *= self.speedup_scale
@@ -84,9 +84,9 @@ class Settings:
 
         elif level >= 6:
 
-            self.ship_speed = 11
+            self.ship_speed = 10.7
             self.monster_speed = 6.5 
-            self.bullet_speed = 10
+            self.bullet_speed = 12
 
 
         
