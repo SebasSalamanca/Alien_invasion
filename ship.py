@@ -1,5 +1,19 @@
 import pygame
+import sys 
+import os
 from pygame.sprite import Sprite
+
+
+def get_reurce_path(relative_path):
+    """Get aboslute path to resource, works for dev and for PyInstaller"""
+    try:
+        #Pyinstaller creates a temp folder and stores path in MEIPASS
+        base_path = sys._MEIPASS
+    except Exception:
+        base_path = os.path.abspath(".")
+    
+    return os.path.join(base_path, relative_path)
+
 
 
 class Ship(Sprite):
@@ -13,7 +27,7 @@ class Ship(Sprite):
         self.screen_rect = ai_game.screen.get_rect()
 
         #Load the ship image and get its rect"""
-        self.image = pygame.image.load('images/ship_420.bmp')
+        self.image = pygame.image.load(get_reurce_path('images/ship_420.bmp'))
         self.rect = self.image.get_rect()
 
         #Same color of the background.

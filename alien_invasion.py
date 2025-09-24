@@ -54,12 +54,12 @@ class AlienInvasion:
         alien = Alien(self)
         alien_width, alien_height = alien.rect.size
 
-        current_x, current_y = alien_width, alien_height+20-20 #to down a little bit the alines 
+        current_x, current_y = alien_width, alien_height #to down a little bit the alines 
 
         while current_y < ((self.settings.screen_height) - 4*alien_height):        
             while current_x < (self.settings.screen_width - 2*alien_width):
                 self._create_alien(current_x, current_y)
-                current_x += 2 * alien_width    
+                current_x += 2.2 * alien_width    
             #Finished a row: reset x value and increment y value
             current_x = alien_width
             current_y += 2 * alien_height
@@ -162,8 +162,8 @@ class AlienInvasion:
         #Disapear and then remove any bullet-alien collisions
         collisions = pygame.sprite.groupcollide(self.bullets, self.aliens,True, True)
         if collisions:
-            self.sound_effect.play_kill_alien()
             for aliens in collisions.values():
+                self.sound_effect.play_kill_alien()
                 self.stats.score += self.settings.alien_points * len(aliens) #Aliens is a list of objects.
             self.sb.prep_score() #Until the first collitions update the score, if there where not other, it works like this
             self.sb.check_high_score()
@@ -239,7 +239,7 @@ class AlienInvasion:
             incresing speed settings of the previous game."""
             self.settings.initialize_dynamic_settings()
             self._game_starts_by_event()   
-            self.sb.prep_score() 
+            self.sb.prep_score()  #In the new match sets the score to 0 
             self.sb.prep_level()
             self.sb.prep_ships()
             pygame.mouse.set_visible(False)
@@ -295,10 +295,10 @@ class AlienInvasion:
 
     def _fire_bullet(self):
         """Create a new bullet and add it to the bullets group"""
-        self.sound_effect.play_shoot()
         if len(self.bullets) < self.settings.bullets_allowed: 
             new_bullet = Bullet(self)
             self.bullets.add(new_bullet)
+        self.sound_effect.play_shoot()
 
 
 

@@ -1,14 +1,28 @@
 import pygame
+import sys
+import os
+
+
+def get_reurce_path(relative_path):
+    """Get aboslute path to resource, works for dev and for PyInstaller"""
+    try:
+        #Pyinstaller creates a temp folder and stores path in MEIPASS
+        base_path = sys._MEIPASS
+    except Exception:
+        base_path = os.path.abspath(".")
+    
+    return os.path.join(base_path, relative_path)
+
 
 class SoundEffect():
     
     def __init__(self): 
 
         pygame.mixer.init()
-        pygame.mixer.music.load("sounds/spaceinvaders1.mpeg") 
-        self.shoot = pygame.mixer.Sound("sounds/shoot.wav")
-        self.kill_alien = pygame.mixer.Sound("sounds/invaderkilled.wav")
-        self.explosion  = pygame.mixer.Sound("sounds/explosion.wav")
+        pygame.mixer.music.load(get_reurce_path("sounds/spaceinvaders1.wav"))
+        self.shoot = pygame.mixer.Sound(get_reurce_path("sounds/shoot.wav"))
+        self.kill_alien = pygame.mixer.Sound(get_reurce_path("sounds/invaderkilled.wav"))
+        self.explosion  = pygame.mixer.Sound(get_reurce_path("sounds/explosion.wav"))   
         
         
 
@@ -27,7 +41,6 @@ class SoundEffect():
         self.kill_alien.play()
 
     def play_explosion(self):
-        self.explosion.set_volume(0.1)
         self.explosion.play()
 
         

@@ -1,5 +1,18 @@
 import pygame
 from pygame.sprite import Sprite
+import sys 
+import os
+
+def get_reurce_path(relative_path):
+    """Get aboslute path to resource, works for dev and for PyInstaller"""
+    try:
+        #Pyinstaller creates a temp folder and stores path in MEIPASS
+        base_path = sys._MEIPASS
+    except Exception:
+        base_path = os.path.abspath(".")
+    
+    return os.path.join(base_path, relative_path)
+
 
 
 class Alien(Sprite):
@@ -13,7 +26,7 @@ class Alien(Sprite):
         self.settings = ai_game.settings
 
         #Load the alien image and set its attribute
-        self.image = pygame.image.load('images/alien_paul_42.bmp')
+        self.image = pygame.image.load(get_reurce_path('images/alien_paul_42.bmp'))
         self.rect = self.image.get_rect()
 
         #Same color of the background.
