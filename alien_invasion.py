@@ -12,6 +12,7 @@ from button import Button
 from scoreboard import Scoreboard
 from sound_effects import SoundEffect
 
+from store_score import StoreScore
 
 class AlienInvasion:
     """Overall class to manage game assets and behavior"""
@@ -27,6 +28,9 @@ class AlienInvasion:
         #Sound effects
         self.sound_effect = SoundEffect()
         self.sound_effect.play_back_sound()
+
+        #Score stored
+        self.new_score = StoreScore()
 
         #Create an instance to store game statistics, 
         #and create a score board
@@ -45,6 +49,9 @@ class AlienInvasion:
         self.game_active = False
         #Because we need only one Play button we'll create the button in the __init__() method
         self.play_button = Button(self, "Play")
+
+        
+        
         
 
     def _create_fleet(self):
@@ -134,6 +141,7 @@ class AlienInvasion:
 
     def run_game(self):
         """Start the main loop for the game"""
+        
         while True:
             self._check_events()            
             if self.game_active:
@@ -218,6 +226,7 @@ class AlienInvasion:
         #Whatch for keyboard and mouse events
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
+                self.new_score.save_new_score(self.stats.high_score) #NEW_SCORE
                 sys.exit()
             elif event.type == pygame.KEYDOWN:
                 self._check_keydown_events(event)
@@ -270,6 +279,7 @@ class AlienInvasion:
             self.ship.moving_left = True
         elif event.key == pygame.K_q:
             self.sound_effect.stop_back_sound()
+            self.new_score.save_new_score(self.stats.high_score) #NEW_SCORE
             sys.exit()
         elif event.key == pygame.K_SPACE:
             self._fire_bullet()
@@ -280,6 +290,8 @@ class AlienInvasion:
             self.sb.prep_level()
             self.sb.prep_ships()
             pygame.mouse.set_visible(False)
+            
+            
 
         
 

@@ -8,7 +8,7 @@ class Settings:
         """Initialize game's static settings"""
         #Screen settings
         self.screen_width = 1200
-        self.screen_height = 800
+        self.screen_height = 750 #Review because it worked with 800
         self.bg_color = (0, 10, 30)
         
 
@@ -25,7 +25,7 @@ class Settings:
 
         #Alien settings
         
-        self.fleet_drop_speed = 7
+        self.fleet_drop_speed = 9
 
         #How quickly the game speeds up 
         self.speedup_scale = 1.2
@@ -56,29 +56,31 @@ class Settings:
     def increase_speed(self, level):
         """Increase speed settings"""
         
-        self.bullet_speed *= self.speedup_scale
+        
         self.alien_points = int(self.alien_points * self.score_scale)
         
         if level == 2:
-
+            self.bullet_speed *= self.speedup_scale
             self.alien_speed *= self.speedup_scale
             self.ship_speed *= self.speedup_scale
             self.monster_speed *= self.speedup_scale
 
         elif level == 3:
+            self.bullet_speed *= self.speedup_scale
             self.number_monsters += 2
             self.monster_speed *= self.speedup_scale
             self.alien_speed *= self.speedup_scale
             self.ship_speed *= self.speedup_scale
 
         elif level == 4:
+            self.bullet_speed *= self.speedup_scale
             self.monster_speed *= self.speedup_scale
             self.alien_speed *= self.speedup_scale
             self.ship_speed *= self.speedup_scale
 
 
         elif level == 5:
-            
+            self.bullet_speed *= self.speedup_scale
             self.number_monsters += 4
             self.monster_speed = 6.5 
 
@@ -86,7 +88,7 @@ class Settings:
 
             self.ship_speed = 10.7
             self.monster_speed = 6.5 
-            self.bullet_speed = 12
+            self.bullet_speed = 12.5
 
 
         
