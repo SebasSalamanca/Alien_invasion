@@ -18,7 +18,7 @@ class StoreScore:
         if self.os_name == 'nt':  # Windows
             self.docs_path = Path(os.path.expandvars('%USERPROFILE%/Documents')) / 'alien_invasion'
         else:
-            self.docs_path = Path.home() / '.alien_invasion'
+            self.docs_path = Path.home() / 'alien_invasion'
 
         self.docs_path.mkdir(exist_ok=True)  # Create folder if doesn't exist
 
