@@ -1,4 +1,4 @@
-# Hello! Welcome to Space Invaders game. :milky_way: 
+# Hello! Welcome to Alien Invasion game. :milky_way: 
 
 This game was inspired by the [Python Crash Course](https://github.com/ehmatthes/pcc_3e) by Eric Matthes.  
 
