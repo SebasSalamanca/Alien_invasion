@@ -68,5 +68,6 @@ class Monster(Sprite):
         
         
     def update(self):
+        #update the monster position
         self.y += self.settings.monster_speed
         self.rect.y = self.y

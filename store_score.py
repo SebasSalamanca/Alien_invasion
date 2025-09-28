@@ -4,30 +4,31 @@ from pathlib import Path
 import base64
 
 class StoreScore:
-
+    """Classs to store high score """
     def __init__(self):
-        
-        #self.stats = ai_game.stats
+        """Initialize paths and encrypted key"""
         self.home_dir = Path.home()
         self.key = 42
         self.os_name = os.name
         self.file_name = self.file_path()
     
     def file_path(self):
+
         # Cross-platform user documents directory
         if self.os_name == 'nt':  # Windows
             self.docs_path = Path(os.path.expandvars('%USERPROFILE%/Documents')) / 'alien_invasion'
         else:
             self.docs_path = Path.home() / 'alien_invasion'
-
-        self.docs_path.mkdir(exist_ok=True)  # Create folder if doesn't exist
+        
+        # Create folder if doesn't exist
+        self.docs_path.mkdir(exist_ok=True)  
 
         return self.docs_path / 'highscore.json'
     
 
 
     def save_new_score(self, high_score):
-
+        #Write the file highscore.json with a new higscore and encrypt it.
         data = {'score': high_score}
 
         score_str = json.dumps(data)
@@ -41,6 +42,7 @@ class StoreScore:
 
     
     def get_stored_score(self):
+        #Get the highscore from highscore.json and decrypte it. If the file doesn't exist return 0
         try:
             with open(self.file_name) as f_obj:
                 encoded = f_obj.read().strip()
@@ -57,9 +59,6 @@ class StoreScore:
         except FileNotFoundError:
             return  0
 
-            
-        """else:
-            return self.stats.high_score"""
 
 
 
