@@ -1,4 +1,4 @@
-# Hello! Welcome to Alien Invasion game. :milky_way: 
+# Hello! Welcome to Alien Invasion game 👽
 
 This game was inspired by the [Python Crash Course](https://github.com/ehmatthes/pcc_3e) by Eric Matthes.  
 
@@ -21,4 +21,6 @@ Some ideas for improvements:
 - Add more game modes and challenges  
 
 There is only one rule **Have fun! 🎉**. It's always a good time to play a game.
+
+Check the **Releases** section to download the game.
 
