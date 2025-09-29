@@ -12,6 +12,8 @@ I added several new features, such as:
 
 ### 🎮 How to Play
 - Press **`p`** to start playing  
+- Use ← / → to move
+- Press Space to shoot
 - Press **`q`** to quit  
 
 ### 🚀 Contribute
@@ -23,4 +25,3 @@ Some ideas for improvements:
 There is only one rule **Have fun! 🎉**. It's always a good time to play a game.
 
 Check the **Releases** section to download the game.
-
